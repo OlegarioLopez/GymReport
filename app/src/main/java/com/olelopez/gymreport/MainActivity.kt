@@ -12,7 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.room.Room
 import com.olelopez.gymreport.data.AppDatabase
+import com.olelopez.gymreport.data.ExerciseSet
 import com.olelopez.gymreport.ui.theme.GymReportTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.util.Date
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +26,19 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             AppDatabase::class.java, "database-name"
         ).build()
+
+
+        val exerciseId = 1L
+        val repetitions = 10
+        val intensity = 8
+        val date = Date() // Fecha actual
+        val userId = 1L
+        var exerciseSetDao = db.exerciseSetDao()
+        // Llamada para insertar en la base de datos
+        GlobalScope.launch(Dispatchers.IO) {
+
+
+        }
         setContent {
             GymReportTheme {
                 // A surface container using the 'background' color from the theme
