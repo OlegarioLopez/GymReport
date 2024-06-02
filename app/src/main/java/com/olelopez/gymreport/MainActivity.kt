@@ -17,6 +17,7 @@ import com.olelopez.gymreport.ui.theme.GymReportTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.Instant.now
 import java.util.Date
 
 class MainActivity : ComponentActivity() {
@@ -33,11 +34,11 @@ class MainActivity : ComponentActivity() {
         val intensity = 8
         val date = Date() // Fecha actual
         val userId = 1L
+        val exerciseSet = ExerciseSet(2L,exerciseId,4,8, Date(),1)
         var exerciseSetDao = db.exerciseSetDao()
         // Llamada para insertar en la base de datos
         GlobalScope.launch(Dispatchers.IO) {
-
-
+            exerciseSetDao.insert(exerciseSet)
         }
         setContent {
             GymReportTheme {
