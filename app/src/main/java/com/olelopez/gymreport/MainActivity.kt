@@ -10,9 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.olelopez.gymreport.data.AppDatabase
 import com.olelopez.gymreport.data.ExerciseSet
+import com.olelopez.gymreport.ui.ExerciseViewModel
+import com.olelopez.gymreport.ui.composables.InsertExerciseAndSetScreen
+import com.olelopez.gymreport.ui.factories.ExerciseViewModelFactory
 import com.olelopez.gymreport.ui.theme.GymReportTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -21,6 +25,8 @@ import java.time.Instant.now
 import java.util.Date
 
 class MainActivity : ComponentActivity() {
+    private lateinit var viewModel: ExerciseViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val db = Room.databaseBuilder(
@@ -28,18 +34,11 @@ class MainActivity : ComponentActivity() {
             AppDatabase::class.java, "database-name"
         ).build()
 
+        val exerciseDao = db.exerciseDao()
+        val exerciseSetDao = db.exerciseSetDao()
+        val viewModelFactory = ExerciseViewModelFactory(exerciseDao, exerciseSetDao)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ExerciseViewModel::class.java)
 
-        val exerciseId = 1L
-        val repetitions = 10
-        val intensity = 8
-        val date = Date() // Fecha actual
-        val userId = 1L
-        val exerciseSet = ExerciseSet(2L,exerciseId,4,8, Date(),1)
-        var exerciseSetDao = db.exerciseSetDao()
-        // Llamada para insertar en la base de datos
-        GlobalScope.launch(Dispatchers.IO) {
-            exerciseSetDao.insert(exerciseSet)
-        }
         setContent {
             GymReportTheme {
                 // A surface container using the 'background' color from the theme
@@ -47,7 +46,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    InsertExerciseAndSetScreen(viewModel)
                 }
             }
         }
