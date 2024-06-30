@@ -5,6 +5,10 @@ import com.olelopez.gymreport.data.Exercise
 import com.olelopez.gymreport.data.ExerciseDao
 import com.olelopez.gymreport.data.ExerciseSet
 import com.olelopez.gymreport.data.ExerciseSetDao
+import com.olelopez.gymreport.ui.dataUI.ExerciseSetWithExerciseName
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -13,6 +17,17 @@ class ExerciseViewModel(
     private val exerciseSetDao: ExerciseSetDao
 ) : ViewModel() {
 
+    private val _exerciseSetsWithNames = MutableStateFlow<List<ExerciseSetWithExerciseName>>(emptyList())
+    val exerciseSetsWithNames: StateFlow<List<ExerciseSetWithExerciseName>> = _exerciseSetsWithNames.asStateFlow()
+
+
+    init {
+        viewModelScope.launch {
+            exerciseSetDao.getExerciseSetsWithExerciseName().collect { sets ->
+                _exerciseSetsWithNames.value = sets
+            }
+        }
+    }
     fun insertExercise(
         name: String,
         muscleGroup: String,

@@ -3,26 +3,18 @@ package com.olelopez.gymreport
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.olelopez.gymreport.data.AppDatabase
-import com.olelopez.gymreport.data.ExerciseSet
+import com.olelopez.gymreport.data.ExerciseSetDao
 import com.olelopez.gymreport.ui.ExerciseViewModel
-import com.olelopez.gymreport.ui.composables.InsertExerciseAndSetScreen
 import com.olelopez.gymreport.ui.factories.ExerciseViewModelFactory
+import com.olelopez.gymreport.ui.navigation.AppNavigation
 import com.olelopez.gymreport.ui.theme.GymReportTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.time.Instant.now
-import java.util.Date
+
+val LocalExerciseSetDao = staticCompositionLocalOf<ExerciseSetDao> { error("No ExerciseSetDao provided") }
 
 class MainActivity : ComponentActivity() {
     private lateinit var viewModel: ExerciseViewModel
@@ -40,31 +32,14 @@ class MainActivity : ComponentActivity() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(ExerciseViewModel::class.java)
 
         setContent {
+            CompositionLocalProvider(LocalExerciseSetDao provides db.exerciseSetDao()) {
+
             GymReportTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    InsertExerciseAndSetScreen(viewModel)
-                }
+
+                AppNavigation(viewModel)
+
             }
         }
     }
 }
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    GymReportTheme {
-        Greeting("Android")
-    }
 }

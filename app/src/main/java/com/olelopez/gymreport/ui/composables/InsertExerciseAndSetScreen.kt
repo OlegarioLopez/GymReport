@@ -9,14 +9,17 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.olelopez.gymreport.R
 import com.olelopez.gymreport.ui.ExerciseViewModel
 import java.util.*
 
 @Composable
-fun InsertExerciseAndSetScreen(viewModel: ExerciseViewModel = viewModel()) {
+fun InsertExerciseAndSetScreen(navController: NavController, viewModel: ExerciseViewModel) {
     var name by remember { mutableStateOf("") }
     var muscleGroup by remember { mutableStateOf("") }
     var repetitions by remember { mutableStateOf("") }
@@ -32,21 +35,21 @@ fun InsertExerciseAndSetScreen(viewModel: ExerciseViewModel = viewModel()) {
         TextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text("Exercise Name") },
+            label = { Text(stringResource(R.string.exercise_name)) },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
             value = muscleGroup,
             onValueChange = { muscleGroup = it },
-            label = { Text("Muscle Group") },
+            label = { Text(stringResource(R.string.muscle_group)) },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
             value = repetitions,
             onValueChange = { repetitions = it },
-            label = { Text("Repetitions") },
+            label = { Text(stringResource(R.string.repetitions)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
@@ -54,7 +57,7 @@ fun InsertExerciseAndSetScreen(viewModel: ExerciseViewModel = viewModel()) {
         TextField(
             value = intensity,
             onValueChange = { intensity = it },
-            label = { Text("Intensity") },
+            label = { Text(stringResource(R.string.intensity)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
@@ -62,7 +65,7 @@ fun InsertExerciseAndSetScreen(viewModel: ExerciseViewModel = viewModel()) {
         TextField(
             value = userId,
             onValueChange = { userId = it },
-            label = { Text("User ID") },
+            label = { Text(stringResource(R.string.user_id)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
@@ -80,7 +83,15 @@ fun InsertExerciseAndSetScreen(viewModel: ExerciseViewModel = viewModel()) {
             },
             modifier = Modifier.align(Alignment.End)
         ) {
-            Text("Add Exercise")
+            Text(stringResource(R.string.add_exercise))
+        }
+        Button(
+            onClick = {
+                navController.navigate("exerciseSetList")
+            },
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Text("Visualize Sets")
         }
     }
 }
