@@ -68,6 +68,7 @@ fun ExerciseSetItem(exerciseSet: ExerciseSetWithExerciseName) {
             Text("Muscle Group: ${exerciseSet.muscleGroup}")
             Text("Reps: ${exerciseSet.repetitions}")
             Text("Intensity: ${exerciseSet.intensity}")
+            Text("kg: ${exerciseSet.kg}")
             Text("Date: ${SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(exerciseSet.date)}")
         }
     }

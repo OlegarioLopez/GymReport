@@ -34,7 +34,8 @@ class ExerciseViewModel(
         repetitions: Int,
         intensity: Int,
         date: Date,
-        userId: Long
+        userId: Long,
+        kg: Float
     ) {
         viewModelScope.launch {
             val exercise = Exercise(name = name, muscleGroup = muscleGroup)
@@ -45,7 +46,8 @@ class ExerciseViewModel(
                 repetitions = repetitions,
                 intensity = intensity,
                 date = date,
-                userId = userId
+                userId = userId,
+                kg = kg
             )
             exerciseSetDao.insert(exerciseSet)
         }

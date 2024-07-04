@@ -14,7 +14,8 @@ import com.olelopez.gymreport.ui.factories.ExerciseViewModelFactory
 import com.olelopez.gymreport.ui.navigation.AppNavigation
 import com.olelopez.gymreport.ui.theme.GymReportTheme
 
-val LocalExerciseSetDao = staticCompositionLocalOf<ExerciseSetDao> { error("No ExerciseSetDao provided") }
+val LocalExerciseSetDao =
+    staticCompositionLocalOf<ExerciseSetDao> { error("No ExerciseSetDao provided") }
 
 class MainActivity : ComponentActivity() {
     private lateinit var viewModel: ExerciseViewModel
@@ -22,9 +23,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "database-name"
-        ).build()
+            applicationContext, AppDatabase::class.java, "database-name"
+        ).addMigrations(AppDatabase.MIGRATION_1_2) // Añadir la migración aquí
+            .build()
 
         val exerciseDao = db.exerciseDao()
         val exerciseSetDao = db.exerciseSetDao()
@@ -34,12 +35,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             CompositionLocalProvider(LocalExerciseSetDao provides db.exerciseSetDao()) {
 
-            GymReportTheme {
+                GymReportTheme {
 
-                AppNavigation(viewModel)
+                    AppNavigation(viewModel)
 
+                }
             }
         }
     }
-}
 }

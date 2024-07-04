@@ -2,7 +2,6 @@ package com.olelopez.gymreport.ui.composables
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -12,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.olelopez.gymreport.R
 import com.olelopez.gymreport.ui.ExerciseViewModel
@@ -26,6 +24,7 @@ fun InsertExerciseAndSetScreen(navController: NavController, viewModel: Exercise
     var intensity by remember { mutableStateOf("") }
     var date by remember { mutableStateOf(Date()) } // Default to current date
     var userId by remember { mutableStateOf("") }
+    var kg by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -43,6 +42,14 @@ fun InsertExerciseAndSetScreen(navController: NavController, viewModel: Exercise
             value = muscleGroup,
             onValueChange = { muscleGroup = it },
             label = { Text(stringResource(R.string.muscle_group)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextField(
+            value = kg,
+            onValueChange = { kg = it },
+            label = { Text(stringResource(R.string.kg)) },
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -78,7 +85,8 @@ fun InsertExerciseAndSetScreen(navController: NavController, viewModel: Exercise
                     repetitions.toIntOrNull() ?: 0,
                     intensity.toIntOrNull() ?: 0,
                     date,
-                    userId.toLongOrNull() ?: 0L
+                    userId.toLongOrNull() ?: 0L,
+                    kg.toFloatOrNull() ?: 0.0f
                 )
             },
             modifier = Modifier.align(Alignment.End)

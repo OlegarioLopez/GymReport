@@ -13,5 +13,7 @@ data class ExerciseSet(
     val repetitions: Int,
     val intensity: Int,
     val date: Date,
-    val userId: Long
+    val userId: Long,
+    val kg: Float
+
 )

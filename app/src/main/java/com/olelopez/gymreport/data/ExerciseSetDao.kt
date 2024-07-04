@@ -22,7 +22,8 @@ interface ExerciseSetDao {
             s.repetitions, 
             s.intensity, 
             s.date, 
-            s.userId
+            s.userId,
+            s.kg
         FROM set_table s
         INNER JOIN exercise_table e ON s.exerciseId = e.exerciseId
         ORDER BY s.date DESC
